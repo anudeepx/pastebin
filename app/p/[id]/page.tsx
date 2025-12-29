@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
+import Link from "next/link";
 import { getPaste, incrementViewCount, deletePaste } from "@/lib/kv";
 import { getCurrentTime, isPasteAvailable } from "@/lib/utils";
 
@@ -52,28 +53,98 @@ export default async function ViewPaste({
   const escapedContent = escapeHtml(updatedPaste.content);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h1 className="text-2xl font-bold mb-4">Paste Content</h1>
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+            Paste Content
+          </h1>
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
+          >
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Create a new paste
+          </Link>
+        </div>
 
-          <div className="mb-4 flex gap-4 text-sm text-gray-600">
-            {updatedPaste.max_views !== null && (
-              <span>
-                Views: {updatedPaste.view_count} / {updatedPaste.max_views}
-              </span>
-            )}
-            {updatedPaste.expires_at && (
-              <span>
-                Expires: {new Date(updatedPaste.expires_at).toLocaleString()}
-              </span>
-            )}
-          </div>
+        {/* Paste Card */}
+        <div className="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
+          {/* Metadata */}
+          {(updatedPaste.max_views !== null || updatedPaste.expires_at) && (
+            <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+              <div className="flex flex-wrap gap-4 sm:gap-6 text-sm">
+                {updatedPaste.max_views !== null && (
+                  <div className="flex items-center text-gray-700">
+                    <svg
+                      className="w-4 h-4 mr-2 text-gray-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                    <span className="font-medium">
+                      {updatedPaste.view_count} / {updatedPaste.max_views} views
+                    </span>
+                  </div>
+                )}
+                {updatedPaste.expires_at && (
+                  <div className="flex items-center text-gray-700">
+                    <svg
+                      className="w-4 h-4 mr-2 text-gray-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span className="font-medium">
+                      Expires:{" "}
+                      {new Date(updatedPaste.expires_at).toLocaleString()}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
-          <div className="bg-gray-100 p-4 rounded">
-            <pre className="whitespace-pre-wrap wrap-break-word">
-              {escapedContent}
-            </pre>
+          {/* Content */}
+          <div className="p-6 sm:p-8">
+            <div className="bg-gray-900 rounded-lg p-4 sm:p-6 overflow-x-auto">
+              <pre className="whitespace-pre-wrap text-sm text-gray-100 font-mono leading-relaxed">
+                {escapedContent}
+              </pre>
+            </div>
           </div>
         </div>
       </div>

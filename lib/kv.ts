@@ -23,18 +23,24 @@ export async function savePaste(paste: Paste): Promise<void> {
 }
 
 export async function getPaste(id: string): Promise<Paste | null> {
-  const data = await kv.get<string>(`paste:${id}`);
+  const data = await kv.get<Paste | string>(`paste:${id}`);
   if (!data) return null;
-  return JSON.parse(data);
+  
+  // Handle both string (needs parsing) and object (already parsed) cases
+  if (typeof data === "string") {
+    return JSON.parse(data);
+  }
+  return data as Paste;
 }
 
 export async function incrementViewCount(id: string): Promise<Paste | null> {
   // Use atomic increment operation to prevent race conditions
   const key = `paste:${id}`;
-  const data = await kv.get<string>(key);
+  const data = await kv.get<Paste | string>(key);
   if (!data) return null;
 
-  const paste: Paste = JSON.parse(data);
+  // Handle both string (needs parsing) and object (already parsed) cases
+  const paste: Paste = typeof data === "string" ? JSON.parse(data) : (data as Paste);
   
   // Atomically increment view_count
   paste.view_count += 1;
