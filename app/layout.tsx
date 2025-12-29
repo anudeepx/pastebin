@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { spaceGrotesk } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Pastebin-Lite",
@@ -13,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <body className="h-full antialiased">{children}</body>
+      <body className={`h-full antialiased ${spaceGrotesk.variable}`}>{children}</body>
     </html>
   );
 }

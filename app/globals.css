@@ -3,13 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* semantic tokens */
+  --primary: 217 91% 60%;
+  --ring: 217 91% 60%;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-primary: hsl(var(--primary));
+  --color-ring: hsl(var(--ring));
+
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-space-grotesk);
 }
 
 body {
@@ -27,7 +35,7 @@ body {
 
 /* Focus styles for accessibility */
 *:focus-visible {
-  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  @apply outline-none ring-2 ring-primary ring-offset-2;
 }
 
 /* Smooth scrolling */
