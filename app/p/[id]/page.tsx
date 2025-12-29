@@ -62,7 +62,7 @@ export default async function ViewPaste({
           </h1>
           <Link
             href="/"
-            className="inline-flex items-center text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
+            className="inline-flex mt-4 items-center text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200"
           >
             <svg
               className="w-4 h-4 mr-1"
@@ -77,8 +77,8 @@ export default async function ViewPaste({
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            Create a new paste
-          </Link>
+            Create a new paste 📋
+          </Link> 
         </div>
 
         {/* Paste Card */}
@@ -146,6 +146,14 @@ export default async function ViewPaste({
               </pre>
             </div>
           </div>
+          <button
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+          }}
+          className="w-full bg-gray-900 text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.01] active:scale-[0.99]"
+          > 
+              Copy link 📋
+            </button>
         </div>
       </div>
     </div>
